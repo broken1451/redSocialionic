@@ -1,0 +1,38 @@
+<div class="post">
+  <ion-item lines="none">
+    <ion-avatar slot="start">
+      <img src="../../../assets/avatars/{{post.usuario.avatar}}" />
+    </ion-avatar>
+    <ion-label>
+      <h3>{{post.usuario.nombre}}</h3>
+      <h5>{{post.usuario.email}}</h5>
+    </ion-label>
+  </ion-item>
+
+  <!-- ngif si exiten imagenes -->
+  <ion-slides mode="ios" pager="true" scrollbar="ios">
+    <ion-slide class="image-slide" [style]="img1 | domSatanatizer">
+      <!-- <img src="../../../assets/{{img1 | domSatanatizer}} " alt="" srcset="" /> -->
+    </ion-slide>
+    <ion-slide class="image-slide" [style]="img2 | domSatanatizer">
+
+    </ion-slide>
+    <ion-slide class="image-slide" [style]="img3 | domSatanatizer">
+
+    </ion-slide>
+  </ion-slides>
+
+
+  <!-- mapa -->
+
+  <ion-item lines='none'>
+    <ion-icon slot="start" name="heart-outline"></ion-icon>
+    <ion-icon slot="end" name="bookmark"></ion-icon>
+  </ion-item>
+
+  <ion-item lines= 'none'>
+    <ion-label class="ion-text-wrap">
+   {{post.mensaje}}
+    </ion-label>
+  </ion-item>
+</div>
