@@ -16,7 +16,11 @@ export class PostsService {
     this.pagina = 0;
   }
 
-  getPost(){
+  getPost(pull: boolean = false){
+    console.log({pull});
+    if (pull) {
+      this.pagina = 0;
+    }
     this.pagina = this.pagina + 1;
     return this.httCliente.get<RespuestaPosts>(`${URL}/posts?pagina=${this.pagina}`);
   }
