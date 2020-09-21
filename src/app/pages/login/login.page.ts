@@ -1,45 +1,45 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { NgForm } from "@angular/forms";
-import { IonSlides } from "@ionic/angular";
-import { UserService } from "../../services/user.service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { IonSlides } from '@ionic/angular';
+import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.page.html",
-  styleUrls: ["./login.page.scss"],
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
   public avatars = [
     {
-      img: "av-1.png",
+      img: 'av-1.png',
       seleccionado: true,
     },
     {
-      img: "av-2.png",
+      img: 'av-2.png',
       seleccionado: false,
     },
     {
-      img: "av-3.png",
+      img: 'av-3.png',
       seleccionado: false,
     },
     {
-      img: "av-4.png",
+      img: 'av-4.png',
       seleccionado: false,
     },
     {
-      img: "av-5.png",
+      img: 'av-5.png',
       seleccionado: false,
     },
     {
-      img: "av-6.png",
+      img: 'av-6.png',
       seleccionado: false,
     },
     {
-      img: "av-7.png",
+      img: 'av-7.png',
       seleccionado: false,
     },
     {
-      img: "av-8.png",
+      img: 'av-8.png',
       seleccionado: false,
     },
   ];
@@ -53,11 +53,11 @@ export class LoginPage implements OnInit {
   };
 
   public loginUser = {
-    email: "adrianbravo14511@gmail.com",
-    password: "123456",
+    email: 'adrianbravo14511@gmail.com',
+    password: '123456',
   };
 
-  @ViewChild("slidePrincipal") slidePrincipal: IonSlides;
+  @ViewChild('slidePrincipal') slidePrincipal: IonSlides;
 
   constructor(private userService: UserService) {}
 

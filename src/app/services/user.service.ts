@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { environment } from 'src/environments/environment';
 
 
-const URL = environment.url
+const URL = environment.url;
 @Injectable({
   providedIn: 'root'
 })
