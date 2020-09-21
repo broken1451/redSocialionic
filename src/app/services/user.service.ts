@@ -11,7 +11,7 @@ const URL = environment.url;
 export class UserService {
 
   public token: string;
-
+  
   constructor(private httpClient: HttpClient, private storage: Storage) {
     this.token = null;
   }

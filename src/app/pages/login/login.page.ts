@@ -79,7 +79,7 @@ export class LoginPage implements OnInit {
 
     this.userService.login(this.loginUser.email, this.loginUser.password).subscribe((user) => {
         console.log({ user });
-      });
+    });
   }
 
   register(formRegister: NgForm) {
