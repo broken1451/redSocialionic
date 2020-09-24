@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, NavController } from '@ionic/angular';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+import { Usuario } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-login',
@@ -57,19 +59,29 @@ export class LoginPage implements OnInit {
     password: '123456',
   };
 
-  @ViewChild('slidePrincipal') slidePrincipal: IonSlides;
 
-  constructor(private userService: UserService) {}
+  public registerUser: Usuario = {
+    email: 'adrianbravo14511@gmail.com',
+    nombre: 'Adrian',
+    avatar: 'av-1.png',
+    password: '123456',
+  };
+
+  @ViewChild('slidePrincipal') slidePrincipal: IonSlides;
+  @ViewChild('slideAvatar') slideAvatar: IonSlides;
+
+  constructor(private userService: UserService, private router: Router, private navControler: NavController) {}
 
   ngOnInit() {}
 
   ionViewWillEnter() {
     this.slidePrincipal.lockSwipes(true); // bloquear slide
+    this.slideAvatar.lockSwipes(false); // bloquear slide
     // console.log({slideslength: this.slidePrincipal.length()})
     // console.log({getActiveIndex: this.slidePrincipal.getActiveIndex()})
   }
 
-  login(formLogin: NgForm) {
+  async login(formLogin: NgForm) {
     if (formLogin.invalid) {
       return;
     }
@@ -77,13 +89,34 @@ export class LoginPage implements OnInit {
     console.log(formLogin.value);
     console.log(this.loginUser);
 
-    this.userService.login(this.loginUser.email, this.loginUser.password).subscribe((user) => {
-        console.log({ user });
-    });
+    const user = await this.userService.login(this.loginUser.email, this.loginUser.password);
+
+    if (user) {
+      // navegar a tabs
+      console.log({user});
+      // this.router.navigate(['/main/tabs/tab1']);
+      this.navControler.navigateRoot('/main/tabs/tab1', {animated: true});
+    }else {
+      // mostrar alerta de usuario incorrecto
+    }
   }
 
-  register(formRegister: NgForm) {
+  async register(formRegister: NgForm) {
     console.log(formRegister.valid);
+    if (formRegister.invalid) {
+      return;
+    }
+
+    const userRegistred = await this.userService.registerUser(this.registerUser);
+    if (userRegistred) {
+      // navegar a tabs
+      console.log({userRegistred});
+      // this.router.navigate(['/main/tabs/tab1']);
+      this.navControler.navigateRoot('/main/tabs/tab1', {animated: true});
+    }else {
+      // console.log({userRegistred});
+      // mostrar alerta de usuario incorrecto
+    }
   }
 
   seleccionAvatar(avatar) {

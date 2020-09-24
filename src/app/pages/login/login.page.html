@@ -51,7 +51,7 @@
 
         <ion-row>
           <ion-col>
-            <ion-slides [options]="avatarSlide">
+            <ion-slides #slideAvatar [options]="avatarSlide">
               <ion-slide *ngFor="let avatar of avatars">
                 <ion-img
                   class="pick-avatar"
@@ -70,12 +70,12 @@
               <ion-list>
                 <ion-item>
                   <ion-label>Email</ion-label>
-                  <ion-input name="email" type="email" required></ion-input>
+                  <ion-input name="email" type="email" [(ngModel)]="registerUser.email" required></ion-input>
                 </ion-item>
 
                 <ion-item>
                   <ion-label>Nombre</ion-label>
-                  <ion-input name="nombre" type="text" required></ion-input>
+                  <ion-input name="nombre" type="text" [(ngModel)]="registerUser.nombre" required></ion-input>
                 </ion-item>
 
                 <ion-item>
@@ -84,6 +84,7 @@
                     name="password"
                     type="password"
                     required
+                    [(ngModel)]="registerUser.password"
                   ></ion-input>
                 </ion-item>
               </ion-list>
