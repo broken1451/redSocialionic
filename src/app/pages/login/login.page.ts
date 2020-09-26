@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { IonSlides, NavController } from '@ionic/angular';
 import { UserService } from '../../services/user.service';
@@ -11,6 +11,21 @@ import { Usuario } from 'src/app/interfaces/interfaces';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+
+
+  public loginUser = {
+    email: 'adrianbravo14511@gmail.com',
+    password: '123456',
+  };
+
+
+  public registerUser: Usuario = {
+    email: 'adrianbravo14511@gmail.com',
+    nombre: 'Adrian',
+    avatar: 'av-1.png',
+    password: '123456',
+  };
+
   public avatars = [
     {
       img: 'av-1.png',
@@ -52,19 +67,6 @@ export class LoginPage implements OnInit {
     slidesPerView: 3.3,
     freeMode: true,
     onlyExternal: false,
-  };
-
-  public loginUser = {
-    email: 'adrianbravo14511@gmail.com',
-    password: '123456',
-  };
-
-
-  public registerUser: Usuario = {
-    email: 'adrianbravo14511@gmail.com',
-    nombre: 'Adrian',
-    avatar: 'av-1.png',
-    password: '123456',
   };
 
   @ViewChild('slidePrincipal') slidePrincipal: IonSlides;
@@ -119,17 +121,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  seleccionAvatar(avatar) {
-    // avatar.seleccionado =  !avatar.seleccionado ;
-    // for (const avata of this.avatars) {
-    //    avata.seleccionado = false;
-    console.log({ avatar });
-    // }
-    this.avatars.forEach((ava) => {
-      return (ava.seleccionado = false);
-    });
-    avatar.seleccionado = true;
-  }
+
 
   mostrarLogin() {
     this.slidePrincipal.lockSwipes(false); // bloquear slide
@@ -143,5 +135,26 @@ export class LoginPage implements OnInit {
     this.slidePrincipal.slideTo(0);
     this.slidePrincipal.lockSwipes(true); // bloquear slide
     console.log({ getActiveIndex: this.slidePrincipal.getActiveIndex() });
+  }
+
+  seleccionAvatar(avatar) {
+    // avatar.seleccionado =  !avatar.seleccionado ;
+    // for (const avata of this.avatars) {
+    //    avata.seleccionado = false;
+    console.log({ avatar });
+    // }
+    this.avatars.forEach((ava) => {
+      return (ava.seleccionado = false);
+    });
+    avatar.seleccionado = true;
+    this.registerUser.avatar = avatar.img;
+    // this.avatarSelected.emit(avatar);
+    console.log({avatar: avatar.img});
+  }
+
+
+  avatarSelected(event){ // RECIBIDO DESDE OUTPUT
+    this.registerUser.avatar = event;
+    console.log(event);
   }
 }
