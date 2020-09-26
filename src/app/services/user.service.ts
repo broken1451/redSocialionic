@@ -8,20 +8,20 @@ import { Usuario } from '../interfaces/interfaces';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-
 const URL = environment.url;
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   public token: string;
-  public usuario: Usuario = {};
+  private usuario: Usuario = {};
 
   constructor(
     private httpClient: HttpClient,
     private storage: Storage,
     private uiService: UiserviceService,
-    private router: Router, private navControler: NavController
+    private router: Router,
+    private navControler: NavController
   ) {
     this.token = null;
   }
@@ -68,13 +68,19 @@ export class UserService {
     await this.storage.set('token', token);
   }
 
+  async cargarStorage() {
+    this.token = (await this.storage.get('token')) || null;
+  }
 
-  async cargarStorage(){
-    this.token = await this.storage.get('token') || null;
+  async getUser() {
+    if (!this.usuario._id) {
+      this.verifyToken();
+    }
+    // return  { ...this.usuario };
+    return  await { ...this.usuario };
   }
 
   registerUser(usuario: Usuario) {
-
     return new Promise((resolve, reject) => {
       try {
         this.httpClient.post(`${URL}/user/create`, usuario).subscribe(
@@ -92,7 +98,9 @@ export class UserService {
           (err) => {
             if (err || !err.ok) {
               console.log({ err });
-              this.uiService.alertaInfo(`El correo ingresado ya existe, El ${err.error.err.errors.email.message}`);
+              this.uiService.alertaInfo(
+                `El correo ingresado ya existe, El ${err.error.err.errors.email.message}`
+              );
               this.token = null;
               this.storage.clear();
               reject(`Error al crear el usuario`);
@@ -105,50 +113,70 @@ export class UserService {
     });
   }
 
-
-  async validaToken(): Promise<boolean>{
-
-    const token: any = await  this.cargarStorage();
+  async validaToken(): Promise<boolean> {
+    const token: any = await this.cargarStorage();
     if (!this.token) {
-      this.navControler.navigateRoot('/login', {animated: true});
+      this.navControler.navigateRoot('/login', { animated: true });
       return Promise.resolve(false);
     }
     return new Promise<boolean>((resolve, reject) => {
-         try {
+      try {
+        const headers = new HttpHeaders({
+          'x-token': this.token,
+        });
+        this.httpClient.get(`${URL}/user/`, { headers }).subscribe(
+          (user: any) => {
+            if (user['ok']) {
+              this.usuario = user['usuario'];
+              resolve(true);
+            } else {
+              reject(false);
+              this.navControler.navigateRoot('/login', { animated: true });
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      } catch (error) {
+        reject(`Error al consultar usuario`);
+        this.navControler.navigateRoot('/login', { animated: true });
+      }
+    });
+  }
+
+  async verifyToken() {
+    await this.cargarStorage();
+    if (!this.token) {
+      this.navControler.navigateRoot('/login', { animated: true });
+      // return Promise.resolve(false);
+      return false;
+    } else {
+      return new Promise<boolean>((resolve, reject) => {
+        try {
           const headers = new HttpHeaders({
-            'x-token': this.token
+            'x-token': this.token,
           });
-          this.httpClient.get(`${URL}/user/`, {headers}).subscribe((user: any) => {
+          this.httpClient.get(`${URL}/user/`, { headers }).subscribe(
+            (user: any) => {
               if (user['ok']) {
                 this.usuario = user['usuario'];
                 resolve(true);
               } else {
                 reject(false);
-                this.navControler.navigateRoot('/login', {animated: true});
+                this.navControler.navigateRoot('/login', { animated: true });
               }
-          }, (err) => {
-            console.log(err);
-          });
-         } catch (error) {
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        } catch (error) {
           reject(`Error al consultar usuario`);
-          this.navControler.navigateRoot('/login', {animated: true});
-         }
+          this.navControler.navigateRoot('/login', { animated: true });
+        }
       });
-  }
-
-
-
-  async verifyToken(){
-    await  this.cargarStorage();
-    if (!this.token) {
-      this.navControler.navigateRoot('/login', {animated: true});
-      // return Promise.resolve(false);
-      return false;
-    } else {
       return true;
     }
   }
-
-
-
 }
