@@ -15,13 +15,13 @@
   <ion-row class="top-20">
     
     <ion-col size="12" class="ion-text-center">
-      <img src="assets/avatars/av-8.png" class="img-avatar">
+      <img src="assets/avatars/{{usuario.avatar}}" class="img-avatar">
     </ion-col>
 
   </ion-row>
 
   <ion-row class="top-20">
-    <ion-col size="12" text-center>
+    <ion-col size="12" class="ion-text-center">
       <ion-label>
         <h1>Actualizar perfil</h1>
       </ion-label>
@@ -34,7 +34,7 @@
        <!-- <app-avatar-selector #slideAvatar (avatarSelected)='avatarSelected($event)'></app-avatar-selector> -->
 
        <ion-row>
-        <ion-col>
+        <ion-col class="ion-text-center">
           <h3>Seleccione Avatar</h3>
         </ion-col>
       </ion-row>
@@ -55,7 +55,7 @@
         </ion-col>
       </ion-row>
 
-  <form>
+  <form (ngSubmit)='updateUser(fActualizar.value)' ngNativeValidate #fActualizar='ngForm'>
       <ion-row>
         <ion-col>
           
@@ -74,7 +74,7 @@
                 <ion-input name="nombre"
                            type="text"
                            [(ngModel)]="usuario.nombre"
-                           required></ion-input>
+                           ></ion-input>
               </ion-item>
 
 
@@ -86,7 +86,8 @@
         <ion-col class="ion-text-center">
           <ion-button type="submit"
                       color="tertiary"
-                      shape="round">
+                      shape="round"
+                      [disabled]='fActualizar.invalid'>
           Actualizar
         </ion-button>
       </ion-col>

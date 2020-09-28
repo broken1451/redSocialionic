@@ -179,4 +179,29 @@ export class UserService {
       return true;
     }
   }
+
+
+  updateUser(usuario: Usuario){
+    return new Promise((resolve, reject) => {
+      try {
+        const headers = new HttpHeaders({
+          'x-token': this.token,
+        });
+        this.httpClient.put(`${URL}/user/update`, usuario, {headers}).subscribe(async (userUpdate) => {
+          console.log({userUpdate});
+          if (userUpdate['ok']) {
+            await this.guardaroken(userUpdate['token']);
+            resolve(userUpdate);
+          } else {
+            reject(false);
+          }
+        }, (err)=>{
+          console.log(err);
+        });
+      } catch (error) {
+        reject(false);
+        console.log(error);
+      }
+    });
+  }
 }

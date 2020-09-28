@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll, IonRefresher } from '@ionic/angular';
 import { Post } from 'src/app/interfaces/interfaces';
 import { PostsService } from '../../services/posts.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -11,6 +12,7 @@ import { PostsService } from '../../services/posts.service';
 export class Tab1Page implements OnInit {
   public posts: Post[] = [];
   public habilitado: boolean;
+  public post$: Subscription;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher) ionRefresher: IonRefresher;
 
@@ -20,6 +22,16 @@ export class Tab1Page implements OnInit {
 
   ngOnInit() {
     this.siguientes();
+    // this.postService.nuevoPost.subscribe((post) => {
+    //   this.posts.unshift(post);
+    // });
+    this.post$ = this.postService.itemsObservable$.subscribe((post) => {
+      this.posts.unshift(post);
+    });
+  }
+
+  ionViewWillEnter(){
+    console.log('ionViewWillEnter');
   }
 
   siguientes(event?: any) {

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 import { IonSlides, NavController } from '@ionic/angular';
 import { Usuario } from 'src/app/interfaces/interfaces';
 import { UserService } from '../../services/user.service';
+import { UiserviceService } from '../../services/uiservice.service';
 
 @Component({
   selector: 'app-tab3',
@@ -58,7 +59,7 @@ export class Tab3Page implements OnInit{
   @ViewChild('slidePrincipal') slidePrincipal: IonSlides;
   @ViewChild('slideAvatar') slideAvatar: IonSlides;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private uiService: UiserviceService) {}
 
   ionViewWillEnter() {
 
@@ -70,6 +71,42 @@ export class Tab3Page implements OnInit{
   async ngOnInit(){
     this.usuario = await this.userService.getUser();
     console.log(this.usuario);
+
+    this.avatars.forEach((av) => {
+      // quito todas las seleccionado a false
+      return av.seleccionado = false;
+    });
+
+    this.avatars.forEach((element) => {
+      if (element.img === this.usuario.avatar) {
+        console.log({element});
+        element.seleccionado = true;
+        return;
+      }
+    });
+  }
+
+
+  // async updateUser(usuario: Usuario){
+  async updateUser(usuario: Usuario){
+    // console.log(usuario);
+    this.usuario.email = usuario.email;
+    this.usuario.nombre = usuario.nombre;
+    // console.log(this.usuario);
+    // if (this.usuario.nombre == usuario.nombre) {
+    //   alert('aca no se puede poner nombres iguales ja');
+    //   return;
+    // }
+    const userUpdate = await this.userService.updateUser(this.usuario);
+    // console.log({userUpdate});
+    if (userUpdate) {
+      // toast con mensaje
+      this.uiService.presentToast('Registro Actualizado');
+    } else {
+      // toast con error
+      this.uiService.presentToast('Registro no se puedo Actualizar');
+    }
+
   }
 
   logout(){}
@@ -84,6 +121,7 @@ export class Tab3Page implements OnInit{
       return (ava.seleccionado = false);
     });
     avatar.seleccionado = true;
+    this.usuario.avatar =  avatar.img;
     // this.avatarSelected.emit(avatar);
     console.log({avatar: avatar.img});
   }

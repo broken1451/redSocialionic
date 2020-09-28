@@ -8,7 +8,7 @@ export interface Post {
   imgs?: string[];
   _id?: string;
   mensaje?: string;
-  coords?: string;
+  coors?: string;
   usuario?: Usuario;
   created?: string;
 }

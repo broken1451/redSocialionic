@@ -5,10 +5,11 @@ import { PostComponent } from './post/post.component';
 import { IonicModule } from '@ionic/angular';
 import { PipesModule } from '../pipes/pipes.module';
 import { AvatarSelectorComponent } from './avatar-selector/avatar-selector.component';
+import { MapaComponent } from './mapa/mapa.component';
 
 @NgModule({
-  declarations: [PostsComponent, PostComponent, AvatarSelectorComponent],
+  declarations: [PostsComponent, PostComponent, AvatarSelectorComponent, MapaComponent],
   imports: [CommonModule, IonicModule, PipesModule],
-  exports: [PostsComponent, PostComponent, AvatarSelectorComponent],
+  exports: [PostsComponent, PostComponent, AvatarSelectorComponent, MapaComponent],
 })
 export class ComponentsModule {}
