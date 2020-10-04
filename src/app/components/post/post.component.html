@@ -10,21 +10,30 @@
   </ion-item>
 
   <!-- ngif si exiten imagenes -->
-  <!-- <ion-slides mode="ios" pager="true" scrollbar="ios">
-    <ion-slide class="image-slide" [style]="img1 | domSatanatizer">
-      <img src="../../../assets/{{img1 | domSatanatizer}} " alt="" srcset="" /> comntada
+  <ion-slides  *ngIf="post.imgs.length >= 1" mode="ios" pager="true" scrollbar="ios">
+    <ion-slide class="image-slide" *ngFor="let img of post.imgs"  [style]=" (img | imagen:post.usuario._id) | domSatanatizer">
+      <img src="../../../assets/{{img | domSatanatizer}} " alt="" srcset="" />
     </ion-slide>
-    <ion-slide class="image-slide" [style]="img2 | domSatanatizer">
+
+
+    <!-- <ion-slide class="image-slide" [style]="img2 | domSatanatizer">
 
     </ion-slide>
     <ion-slide class="image-slide" [style]="img3 | domSatanatizer">
 
+    </ion-slide> -->
+  </ion-slides>
+
+  <ion-slides *ngIf="post.imgs.length === 1" mode="ios"  scrollbar="ios" [options]='slideSoloOpt'>
+    <ion-slide class="image-slide"    [style]=" (post.imgs[0] | imagen:post.usuario._id) | domSatanatizer">
+      <img src="../../../assets/{{post.imgs[0] | domSatanatizer}} " alt="" srcset="" /> 
     </ion-slide>
-  </ion-slides> -->
+
+  </ion-slides>
 
 
   <!-- mapa -->
-  <app-mapa [coords]='post.coors'></app-mapa>
+  <app-mapa [coords]='post.coors' *ngIf="post.coors"></app-mapa>
 
   <ion-item lines='none'>
     <ion-icon slot="start" name="heart-outline"></ion-icon>

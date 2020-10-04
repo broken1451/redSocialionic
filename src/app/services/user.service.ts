@@ -63,9 +63,18 @@ export class UserService {
     });
   }
 
+
+  logout(){
+    this.token = null;
+    this.usuario = null;
+    this.storage.clear();
+    this.navControler.navigateRoot('/login',{animated: true});
+  }
+
   async guardaroken(token: string) {
     this.token = token;
     await this.storage.set('token', token);
+    await this.verifyToken();
   }
 
   async cargarStorage() {

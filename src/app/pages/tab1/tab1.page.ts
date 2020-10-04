@@ -31,6 +31,7 @@ export class Tab1Page implements OnInit {
   }
 
   ionViewWillEnter(){
+    this.siguientes();
     console.log('ionViewWillEnter');
   }
 

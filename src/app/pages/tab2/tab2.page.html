@@ -34,30 +34,37 @@
 
   </ion-list>
 
+
   <ion-row>
     <ion-col size="6">
       <ion-button expand="full"
-                  shape="round">
+                  shape="round"
+                  (click)="camara()">
         <ion-icon slot="start" name="camera"></ion-icon>
         Cámara
       </ion-button>
     </ion-col>
+    
     <ion-col size="6">
-      <ion-button expand="full"
-                  shape="round">
+      <ion-button  type="file" expand="full"
+                  shape="round"
+                  (click)="library($event)"
+                 >
         <ion-icon slot="start" name="images"></ion-icon>
-        Galería
+        Galeria
       </ion-button>
+   
     </ion-col>
   </ion-row>
 
   <ion-row>
     <ion-col size="3" *ngFor="let image of tempImages">
       <ion-card>
-        <img src="">
+        <img [src]="image | imgPipe ">
+        <!-- <img src="http://localhost/_app_file_/data/user/0/io.ionic.starter/cache/1601687835969.jpg"> -->
       </ion-card>
     </ion-col>
   </ion-row>
 
 
-</ion-content>
+</ion-content>  

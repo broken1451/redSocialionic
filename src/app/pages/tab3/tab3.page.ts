@@ -3,6 +3,7 @@ import { IonSlides, NavController } from '@ionic/angular';
 import { Usuario } from 'src/app/interfaces/interfaces';
 import { UserService } from '../../services/user.service';
 import { UiserviceService } from '../../services/uiservice.service';
+import { PostsService } from '../../services/posts.service';
 
 @Component({
   selector: 'app-tab3',
@@ -59,9 +60,10 @@ export class Tab3Page implements OnInit{
   @ViewChild('slidePrincipal') slidePrincipal: IonSlides;
   @ViewChild('slideAvatar') slideAvatar: IonSlides;
 
-  constructor(private userService: UserService, private uiService: UiserviceService) {}
+  constructor(private userService: UserService, private uiService: UiserviceService, private postService: PostsService) {}
 
   ionViewWillEnter() {
+    console.log('aca tab 3')
 
     this.slideAvatar.lockSwipes(false); // bloquear slide
     // console.log({slideslength: this.slidePrincipal.length()})
@@ -109,7 +111,10 @@ export class Tab3Page implements OnInit{
 
   }
 
-  logout(){}
+  logout(){
+    this.userService.logout();
+    this.postService.pagina = 0;
+  }
 
   seleccionAvatar(avatar) {
     // avatar.seleccionado =  !avatar.seleccionado ;
